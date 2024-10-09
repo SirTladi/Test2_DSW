@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity,StyleSheet,TextInput,ScrollView,Image, Alert,ActivityIndicator 
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, Image, Alert, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { db, storage } from './firebases';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
@@ -15,8 +14,7 @@ const AddRecipeScreen = ({ navigation }) => {
 
   const pickImage = async () => {
     const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (result.granted === false) {
+    if (!result.granted) {
       alert("Permission to access media is required!");
       return;
     }
@@ -43,7 +41,7 @@ const AddRecipeScreen = ({ navigation }) => {
     return new Promise((resolve, reject) => {
       uploadTask.on(
         'state_changed',
-        (snapshot) => {},
+        null,
         (error) => reject(error),
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
@@ -72,12 +70,14 @@ const AddRecipeScreen = ({ navigation }) => {
         ingredients: ingredients.split(','),
         instructions,
         imageUrl,
+      }).then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        Alert.alert('Success', 'Recipe saved successfully');
+        navigation.goBack(); // Navigate back to the list screen
       });
 
-      Alert.alert('Success', 'Recipe saved successfully');
-      navigation.goBack();
     } catch (error) {
-      console.error(error);
+      console.error("Error saving recipe:", error);
       Alert.alert('Error', 'Something went wrong, please try again.');
     } finally {
       setUploading(false);
@@ -161,11 +161,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     fontSize: 16,
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
   },
   imagePickerButton: {
     width: '100%',
@@ -194,11 +189,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#27ae60',
     borderRadius: 10,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
   },
   saveButtonText: {
     color: '#fff',
@@ -206,3 +196,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+

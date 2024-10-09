@@ -1,114 +1,42 @@
-import React from 'react';
-import {View,Text,FlatList, TouchableOpacity, StyleSheet, StatusBar,Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar, Image } from 'react-native';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from './firebases';
 
 const RecipeListScreen = ({ navigation }) => {
-  const recipes = [
-    {
-      id: '1',
-      title: 'Spaghetti Bolognese',
-      ingredients: [
-        '200g spaghetti',
-        '150g ground beef',
-        '1 onion, chopped',
-        '2 cloves garlic, minced',
-        '1 can of crushed tomatoes',
-        '1 tbsp olive oil',
-        'Salt and pepper to taste',
-      ],
-      instructions: `
-      1. Cook the spaghetti according to the package instructions. Drain and set aside.
-      2. In a pan, heat the olive oil and sauté the onion and garlic until golden.
-      3. Add the ground beef and cook until browned.
-      4. Pour in the crushed tomatoes and simmer for 15 minutes.
-      5. Season with salt and pepper. Serve the sauce over the spaghetti.
-      `,
-      image: require('./images/Spagethi_Bolonise.jpeg'),
-    },
-    {
-      id: '2',
-      title: 'Chicken Caesar Salad',
-      ingredients: [
-        '2 chicken breasts',
-        '1 head of romaine lettuce, chopped',
-        '50g croutons',
-        '50g parmesan cheese, shaved',
-        '3 tbsp Caesar dressing',
-        'Olive oil for cooking',
-      ],
-      instructions: `
-      1. Grill or pan-fry the chicken breasts in olive oil until cooked through. Slice thinly.
-      2. In a bowl, toss the lettuce with croutons, parmesan, and Caesar dressing.
-      3. Top the salad with sliced chicken and serve.
-      `,
-      image: require('./images/Chicken_Salad.jpeg'),
-    },
-    {
-      id: '3',
-      title: 'Veggie Stir-Fry',
-      ingredients: [
-        '1 red bell pepper, sliced',
-        '1 carrot, julienned',
-        '100g broccoli florets',
-        '1 zucchini, sliced',
-        '2 tbsp soy sauce',
-        '1 tbsp sesame oil',
-        '1 tsp ginger, grated',
-      ],
-      instructions: `
-      1. Heat sesame oil in a wok or pan over medium-high heat.
-      2. Add ginger and stir-fry for 1 minute.
-      3. Add all vegetables and stir-fry for 5-7 minutes until they are crisp-tender.
-      4. Pour in soy sauce and cook for another 2 minutes.
-      5. Serve hot, optionally over rice or noodles.
-      `,
-      image: require('./images/veggie_stir_fry.jpeg'),
-    },
-    {
-      id: '4',
-      title: 'Margherita Pizza',
-      ingredients: [
-        '1 pizza base',
-        '100g tomato sauce',
-        '100g mozzarella cheese, sliced',
-        'Fresh basil leaves',
-        '1 tbsp olive oil',
-      ],
-      instructions: `
-      1. Preheat the oven to 220°C (425°F).
-      2. Spread the tomato sauce over the pizza base.
-      3. Add mozzarella slices and fresh basil leaves on top.
-      4. Drizzle with olive oil and bake for 10-12 minutes until the crust is golden.
-      5. Remove from oven and serve.
-      `,
-      image: require('./images/Margaritha_Pizza.jpeg'),
-    },
-    {
-      id: '5',
-      title: 'Banana Pancakes',
-      ingredients: [
-        '1 ripe banana, mashed',
-        '1 egg',
-        '50g flour',
-        '1/2 cup milk',
-        '1 tsp baking powder',
-        'Maple syrup and berries for serving',
-      ],
-      instructions: `
-      1. In a bowl, mix the mashed banana, egg, flour, milk, and baking powder until smooth.
-      2. Heat a non-stick pan and pour a small amount of batter to form a pancake.
-      3. Cook for 2-3 minutes on each side until golden brown.
-      4. Serve with maple syrup and fresh berries.
-      `,
-      image: require('./images/banana_Pizza.jpeg'),
-    },
-  ];
+  const [recipes, setRecipes] = useState([]);
+
+  const fetchRecipes = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'recipes'));
+      const recipeList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRecipes(recipeList);
+    } catch (error) {
+      console.error("Error fetching recipes: ", error);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchRecipes();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.recipeItem}
       onPress={() => navigation.navigate('RecipeDetail', { recipe: item })}
     >
-      <Image source={item.image} style={styles.recipeImage} />
+      {item.imageUrl ? (
+        <Image source={{ uri: item.imageUrl }} style={styles.recipeImage} />
+      ) : (
+        <View style={styles.recipeImagePlaceholder} />
+      )}
       <Text style={styles.recipeTitle}>{item.title}</Text>
       <Text style={styles.viewDetails}>View Details</Text>
     </TouchableOpacity>
@@ -124,6 +52,7 @@ const RecipeListScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<Text style={styles.emptyMessage}>No recipes found</Text>}
       />
       <TouchableOpacity 
         style={styles.addButton} 
@@ -198,6 +127,19 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  recipeImagePlaceholder: {
+    width: '100%',
+    height: 150,
+    backgroundColor: '#ddd',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: '#999',
+    marginTop: 20,
   },
 });
 
