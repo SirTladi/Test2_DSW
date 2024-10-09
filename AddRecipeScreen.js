@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  TextInput, 
-  ScrollView, 
-  Image, 
-  Alert, 
-  ActivityIndicator 
+import { View, Text, TouchableOpacity,StyleSheet,TextInput,ScrollView,Image, Alert,ActivityIndicator 
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { db, storage } from './firebases';
@@ -22,7 +13,6 @@ const AddRecipeScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // Function to pick an image from the device
   const pickImage = async () => {
     const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -43,7 +33,6 @@ const AddRecipeScreen = ({ navigation }) => {
     }
   };
 
-  // Function to upload the image to Firebase Storage
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
@@ -54,9 +43,7 @@ const AddRecipeScreen = ({ navigation }) => {
     return new Promise((resolve, reject) => {
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
-          // Optional: track upload progress here
-        },
+        (snapshot) => {},
         (error) => reject(error),
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
@@ -66,7 +53,6 @@ const AddRecipeScreen = ({ navigation }) => {
     });
   };
 
-  // Function to handle recipe submission
   const handleSaveRecipe = async () => {
     if (!title || !ingredients || !instructions) {
       Alert.alert("Please fill all fields");
@@ -81,10 +67,9 @@ const AddRecipeScreen = ({ navigation }) => {
         imageUrl = await uploadImage(image);
       }
 
-      // Save recipe data to Firestore
       await addDoc(collection(db, 'recipes'), {
         title,
-        ingredients: ingredients.split(','), // Assuming ingredients are entered as comma-separated
+        ingredients: ingredients.split(','),
         instructions,
         imageUrl,
       });

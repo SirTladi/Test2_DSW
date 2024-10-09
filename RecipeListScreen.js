@@ -1,16 +1,7 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  FlatList, 
-  TouchableOpacity, 
-  StyleSheet, 
-  StatusBar,
-  Image 
-} from 'react-native';
+import {View,Text,FlatList, TouchableOpacity, StyleSheet, StatusBar,Image } from 'react-native';
 
 const RecipeListScreen = ({ navigation }) => {
-  // Recipe data including images
   const recipes = [
     {
       id: '1',
@@ -31,7 +22,7 @@ const RecipeListScreen = ({ navigation }) => {
       4. Pour in the crushed tomatoes and simmer for 15 minutes.
       5. Season with salt and pepper. Serve the sauce over the spaghetti.
       `,
-      image: require('./images/Spagethi_Bolonise.jpeg'), // Updated path
+      image: require('./images/Spagethi_Bolonise.jpeg'),
     },
     {
       id: '2',
@@ -49,7 +40,7 @@ const RecipeListScreen = ({ navigation }) => {
       2. In a bowl, toss the lettuce with croutons, parmesan, and Caesar dressing.
       3. Top the salad with sliced chicken and serve.
       `,
-      image: require('./images/Chicken_Salad.jpeg'), // Updated path
+      image: require('./images/Chicken_Salad.jpeg'),
     },
     {
       id: '3',
@@ -70,7 +61,7 @@ const RecipeListScreen = ({ navigation }) => {
       4. Pour in soy sauce and cook for another 2 minutes.
       5. Serve hot, optionally over rice or noodles.
       `,
-      image: require('./images/veggie_stir_fry.jpeg'), // Updated path
+      image: require('./images/veggie_stir_fry.jpeg'),
     },
     {
       id: '4',
@@ -89,7 +80,7 @@ const RecipeListScreen = ({ navigation }) => {
       4. Drizzle with olive oil and bake for 10-12 minutes until the crust is golden.
       5. Remove from oven and serve.
       `,
-      image: require('./images/Margaritha_Pizza.jpeg'), // Updated path
+      image: require('./images/Margaritha_Pizza.jpeg'),
     },
     {
       id: '5',
@@ -108,7 +99,7 @@ const RecipeListScreen = ({ navigation }) => {
       3. Cook for 2-3 minutes on each side until golden brown.
       4. Serve with maple syrup and fresh berries.
       `,
-      image: require('./images/banana_Pizza.jpeg'), // Updated path
+      image: require('./images/banana_Pizza.jpeg'),
     },
   ];
 

@@ -6,29 +6,30 @@ const ProfileScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Profile Screen</Text>
       <Text style={styles.info}>User information can be displayed here.</Text>
-      
-      {/* Button to navigate to the Settings screen */}
       <Button title="Edit Profile" onPress={() => navigation.navigate('Settings')} />
     </View>
   );
 };
 
-// StyleSheet for consistent styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5', // Light gray background for better visibility
+    backgroundColor: '#f0f0f0',
+    padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333',
+    marginBottom: 15,
   },
   info: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: 18,
+    color: '#555',
+    textAlign: 'center',
+    marginBottom: 30,
   },
 });
 

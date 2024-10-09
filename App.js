@@ -39,7 +39,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={user ? "RecipeListScreen" : "Login"}>
-        {/* Authentication Screens */}
         {!user ? (
           <>
             <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Register' }} />
@@ -52,8 +51,6 @@ export default function App() {
           </>
         ) : (
           <>
-            {/* Main Application Screens */}
-            
           </>
         )}
       </Stack.Navigator>

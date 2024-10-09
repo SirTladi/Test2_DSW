@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  Alert 
-} from 'react-native';
+import {View,Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -14,17 +7,12 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleRegister = () => {
-    // Example registration functionality; replace with your auth logic
     if (username === '' || email === '' || password === '') {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
     
-    // If registration is successful, navigate to the next screen
     Alert.alert('Success', 'Registered successfully');
-    
-    // Add your registration logic here
-    // navigation.navigate('Login'); // Uncomment this line after implementing authentication
   };
 
   return (
@@ -77,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f7f8fc',  // Light background for a clean look
+    backgroundColor: '#f7f8fc',
   },
   title: {
     fontSize: 32,
@@ -108,7 +96,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     padding: 15,
-    backgroundColor: '#1e90ff',  // Bright blue for the button
+    backgroundColor: '#1e90ff',
     borderRadius: 8,
     alignItems: 'center',
     marginVertical: 10,

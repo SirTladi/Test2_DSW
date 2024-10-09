@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  Alert,
-  router 
-} from 'react-native';
+import { View,Text, TextInput,TouchableOpacity, StyleSheet,Alert} from 'react-native';
 
-const LoginScreen = ({ navigation }) => {  // Receive navigation as a prop
+const LoginScreen = ({ navigation }) => {  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,8 +13,7 @@ const LoginScreen = ({ navigation }) => {  // Receive navigation as a prop
 
     Alert.alert('Success', 'Logged in successfully');
     
-    // Navigate to the recipe list screen using React Navigation
-    navigation.navigate('RecipeListScreen');  // Use navigation instead of router
+    navigation.navigate('RecipeListScreen');  
   };
 
   return (
@@ -70,7 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f7f8fc',  // Light background color for a clean look
+    backgroundColor: '#f7f8fc',
   },
   title: {
     fontSize: 32,
@@ -101,7 +92,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     padding: 15,
-    backgroundColor: '#1e90ff',  // Bright blue for a modern button look
+    backgroundColor: '#1e90ff',
     borderRadius: 8,
     alignItems: 'center',
     marginVertical: 10,
